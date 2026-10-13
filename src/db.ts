@@ -32,6 +32,8 @@ interface Store {
 }
 
 const file = path.resolve(process.env.DB_FILE || 'trackwapp.json');
+// make sure the data directory (e.g. a mounted volume path) exists before writing
+try { fs.mkdirSync(path.dirname(file), { recursive: true }); } catch {}
 
 function load(): Store {
   try {

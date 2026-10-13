@@ -9,6 +9,9 @@ import { buildWorkbook } from './xlsx';
 const PORT = Number(process.env.PORT || 3000);
 const app = express();
 
+// Health check — always 200, before any auth, so Fly/uptime checks pass.
+app.get('/healthz', (_req, res) => res.json({ ok: true, connected: wa.connected }));
+
 // Optional password gate — set DASH_PASSWORD before exposing this to the internet.
 const PASS = process.env.DASH_PASSWORD;
 if (PASS) {
@@ -140,7 +143,7 @@ wss.on('connection', (ws) => {
   ws.send(JSON.stringify({ type: 'snapshot', connected: wa.connected, user: wa.user, qr: wa.lastQR, contacts: DB.listContacts().map(contactState) }));
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\nTrackWapp dashboard → http://localhost:${PORT}\n`);
   wa.start().catch((e) => console.error('WhatsApp start failed:', e));
 });

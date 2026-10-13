@@ -1,5 +1,5 @@
-# fly.toml — edit `app` to a unique name (or let `fly launch` set it)
-app = "trackwapp"
+# fly.toml — `app` must match your Fly app name
+app = "wapp-pt-hgg"
 primary_region = "sin"
 
 [build]
@@ -20,6 +20,13 @@ primary_region = "sin"
   auto_stop_machines = false   # must stay on to hold the WhatsApp connection
   auto_start_machines = true
   min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "3s"
+    grace_period = "20s"
+    method = "GET"
+    path = "/healthz"
 
 [[vm]]
   size = "shared-cpu-1x"
