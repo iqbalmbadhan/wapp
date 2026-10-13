@@ -1,0 +1,26 @@
+# fly.toml — edit `app` to a unique name (or let `fly launch` set it)
+app = "trackwapp"
+primary_region = "sin"
+
+[build]
+
+[env]
+  PORT = "3000"
+  AUTH_DIR = "/data/auth"
+  DB_FILE = "/data/trackwapp.json"
+
+# persistent disk for the WhatsApp session + session log
+[mounts]
+  source = "data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false   # must stay on to hold the WhatsApp connection
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
