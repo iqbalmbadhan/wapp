@@ -1,23 +1,23 @@
 # fly.toml — `app` must match your Fly app name
-app = "wapp-pt-hgg"
-primary_region = "sin"
+app = 'wapp-pt-hgg'
+primary_region = 'ams'
 
 [build]
 
 [env]
-  PORT = "3000"
-  AUTH_DIR = "/data/auth"
-  DB_FILE = "/data/trackwapp.json"
+  AUTH_DIR = '/data/auth'
+  DB_FILE = '/data/trackwapp.json'
+  PORT = '3000'
 
 # persistent disk for the WhatsApp session + session log
-[mounts]
-  source = "data"
-  destination = "/data"
+[[mounts]]
+  source = 'data'
+  destination = '/data'
 
 [http_service]
-  internal_port = 3000
+  internal_port = 3000          # must match the PORT the app listens on
   force_https = true
-  auto_stop_machines = false   # must stay on to hold the WhatsApp connection
+  auto_stop_machines = 'off'    # must stay on to hold the WhatsApp connection
   auto_start_machines = true
   min_machines_running = 1
 
@@ -29,5 +29,5 @@ primary_region = "sin"
     path = "/healthz"
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "512mb"
+  size = 'shared-cpu-1x'
+  memory = '512mb'
